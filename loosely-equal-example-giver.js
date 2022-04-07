@@ -172,5 +172,11 @@ function isNumberInNestedArray(target, array) {
 }
 
 function handleObject(input) {
-	throw Error("TODO: Unimplemented");
+	const toPrimitive = input[Symbol.toPrimitive];
+	if (typeof toPrimitive === "function") {
+		const primitive = toPrimitive();
+		return giveExamples(primitive);
+	} else {
+		return [];
+	}
 }
