@@ -1,5 +1,7 @@
 function onBodyLoad() {
 	const input = document.querySelector("#input");
+
+	input.addEventListener("input", onInput);
 	input.addEventListener(
 		"keydown",
 		(event) => {
