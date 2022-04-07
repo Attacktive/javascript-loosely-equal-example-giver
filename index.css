@@ -1,3 +1,9 @@
+form.container {
+	border: 2px solid #dee2e6;
+	border-top-left-radius: 0.25rem;
+	border-top-right-radius: 0.25rem;
+}
+
 #output {
 	background-color: #eeeeee;
 	min-height: 30px;
