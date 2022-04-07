@@ -29,21 +29,6 @@ function giveExamples(x) {
 		return [false, 0, "", [], [[]]];
 	}
 
-	// TODO: [[[]]], [[[[]]]], ...
-	if (x === [] || x === [[]]) {
-		return [false, 0, ""];
-	}
-
-	// TODO: [[0]], [[[0]]], ...
-	if (x === [0]) {
-		return [false, 0, "0"];
-	}
-
-	// // TODO: [[1]], [[[1]]], ...
-	if (x === [1]) {
-		return [true, 1, "1"];
-	}
-
 	const type = typeof x;
 	switch (type) {
 		case "undefined":
@@ -60,8 +45,14 @@ function giveExamples(x) {
 			} else {
 				return [x];
 			}
+		case "object":
+			if (Array.isArray(x)) {
+				return handleArray(x);
+			} else {
+				return handleObject(x);
+			}
 		default:
-			// TODO: "object", "symbol", "function"
+			// TODO: "symbol", "function"
 			const message = `Not implemented for type ${type}.`;
 
 			console.error(message, x);
@@ -85,16 +76,12 @@ function format(input) {
 		case "string":
 			return `"${input}"`;
 		default:
-			// object, symbol, function... Am I OK with all of these?
 			if (input === null) {
 				return "null";
 			}
 
-			if (input === []) {
-				return "[]";
-			}
-
-			return input.toString();
+			// TODO: deal with undefined, Function, Symbol, Date, Infinity, NaN and nested Object
+			return JSON.stringify(input);
 	}
 }
 
@@ -114,4 +101,60 @@ function tryParsingToNumber(input) {
 	}
 
 	return undefined;
+}
+
+function handleArray(input) {
+	if (isNestedEmptyArray(input) || isNumberInNestedArray(0, input)) {
+		return [false, 0, ""];
+	}
+	if (isNumberInNestedArray(0, input)) {
+		return [false, 0, "0"];
+	}
+	if (isNumberInNestedArray(1, input)) {
+		return [true, 1, "1"];
+	}
+
+	return [];
+}
+
+/**
+ * @param {Array} array
+ * @return {boolean}
+ */
+function isNestedEmptyArray(array) {
+	if (!Array.isArray(array)) {
+		return false;
+	}
+	if (array.length === 0) {
+		return true;
+	}
+	if (array.length > 1) {
+		return false;
+	}
+
+	const theOnlyElement = array[0];
+	return isNestedEmptyArray(theOnlyElement);
+}
+
+/**
+ * @param {Number} target
+ * @param {Array} array
+ * @return {boolean}
+ */
+function isNumberInNestedArray(target, array) {
+	if (array.length !== 1) {
+		return false;
+	}
+
+	const theOnlyElement = array[0];
+	if (Array.isArray(theOnlyElement)) {
+		return isNumberInNestedArray(target, theOnlyElement);
+	} else {
+		let parsed = parseFloat(theOnlyElement);
+		return (parsed === target);
+	}
+}
+
+function handleObject(input) {
+	throw Error("TODO: Unimplemented");
 }
