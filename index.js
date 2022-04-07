@@ -1,5 +1,6 @@
 function run() {
 	const input = document.querySelector("#input");
+	const xEvaluatedTo = document.querySelector("#x-evaluated-to");
 	const output = document.querySelector("#output");
 
 	const toEval = `x = ${input.value};`;
@@ -11,6 +12,8 @@ function run() {
 	try {
 		eval(toEval);
 
+		xEvaluatedTo.textContent = `let x = ${x}`;
+
 		const examples = giveExamples(x);
 		result = examples.map(example => `x == ${format(example)}`).join("\n");
 
@@ -18,7 +21,8 @@ function run() {
 	} catch (error) {
 		console.error(error);
 
-		result = `${error.toString()}${error.stack}`;
+		xEvaluatedTo.textContent = "let x;";
+		result = error.stack;
 
 		output.classList.add("error");
 	}
