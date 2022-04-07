@@ -183,6 +183,10 @@ function tryParsingToNumber(string) {
 	return undefined;
 }
 
+/**
+ * @param {Array} array
+ * @return {(boolean|number|string)[]|*[]}
+ */
 function handleArray(array) {
 	if (isNestedEmptyArray(array) || isNumberInNestedArray(0, array)) {
 		return [false, 0, ""];
@@ -235,6 +239,10 @@ function isNumberInNestedArray(target, array) {
 	}
 }
 
+/**
+ * @param {Object} object
+ * @return {Array|*[]}
+ */
 function handleObject(object) {
 	const toPrimitive = object[Symbol.toPrimitive];
 	if (typeof toPrimitive === "function") {
@@ -245,6 +253,10 @@ function handleObject(object) {
 	}
 }
 
+/**
+ * @param {Symbol} symbol
+ * @return {Object[]}
+ */
 function handleSymbol(symbol) {
 	const first = Object(symbol);
 	const second = Object(first);
