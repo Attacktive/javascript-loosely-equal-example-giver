@@ -1,4 +1,7 @@
 function onBodyLoad() {
+	const footer = document.querySelector("#user-agent");
+	footer.textContent = window.navigator.userAgent;
+
 	const input = document.querySelector("#input");
 
 	input.addEventListener("input", onInput);
