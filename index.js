@@ -42,7 +42,17 @@ function run() {
 		const examples = giveExamples(x);
 
 		if (examples.length > 0) {
-			result = examples.map(example => `x == ${format(example)}`).join("\n");
+			if (examples.length > 10) {
+				result = examples
+					.slice(0, 10)
+					.map(example => `x == ${format(example)}`)
+					.join("\n")
+					.concat("\n…");
+			} else {
+				result = examples
+					.map(example => `x == ${format(example)}`)
+					.join("\n");
+			}
 		} else {
 			result = `Nothing is loosely equal to ${format(x)}.`;
 		}
