@@ -2,3 +2,7 @@
 	background-color: #eeeeee;
 	min-height: 30px;
 }
+
+label[for=input] {
+	width: 4%;
+}
