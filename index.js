@@ -37,14 +37,14 @@ function run() {
 	try {
 		eval(toEval);
 
-		xEvaluatedTo.textContent = `let x = ${x};`;
+		xEvaluatedTo.textContent = `let x = ${format(x)};`;
 
 		const examples = giveExamples(x);
 
 		if (examples.length > 0) {
 			result = examples.map(example => `x == ${format(example)}`).join("\n");
 		} else {
-			result = `Nothing is loosely equal to ${x}.`;
+			result = `Nothing is loosely equal to ${format(x)}.`;
 		}
 	} catch (error) {
 		console.error(error);
