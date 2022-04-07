@@ -1,3 +1,15 @@
+function onBodyLoad() {
+	const input = document.querySelector("#input");
+	input.addEventListener(
+		"keydown",
+		(event) => {
+			if (event.ctrlKey && event.code === "Enter") {
+				run();
+			}
+		}
+	);
+}
+
 function onInput() {
 	const input = document.querySelector("#input");
 	const button = document.querySelector("#button");
