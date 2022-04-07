@@ -4,7 +4,7 @@ function run() {
 	const output = document.querySelector("#output");
 
 	const toEval = `x = ${input.value};`;
-	console.log("toEval", toEval);
+	console.debug("toEval", toEval);
 
 	let x;
 	let result;
