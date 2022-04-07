@@ -9,7 +9,7 @@ function giveExamples(x) {
 		return [];
 	}
 
-	if (x === null || x === "0") {
+	if (x === null) {
 		return [undefined, null];
 	}
 
