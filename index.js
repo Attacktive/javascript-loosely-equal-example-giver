@@ -84,7 +84,14 @@ function giveExamples(x) {
 		case "bigint":
 			return [x, String(x)];
 		case "boolean":
-			throw Error(`${x} is another Boolean value other than true or false!?`)
+			throw Error(`${x} is another Boolean value other than true or false!?`);
+		case "string":
+			let parsed = tryParsingToNumber(x);
+			if (parsed) {
+				return [x, parsed];
+			} else {
+				return [x];
+			}
 		default:
 			// TODO: "object", "symbol", "function"
 			const message = `Not implemented for type ${type}.`;
@@ -121,4 +128,22 @@ function format(input) {
 
 			return input.toString();
 	}
+}
+
+/**
+ * @param {String} input
+ * @return {undefined|number}
+ */
+function tryParsingToNumber(input) {
+	let parsed = parseInt(input);
+	if (Number.isInteger(parsed)) {
+		return parsed;
+	}
+
+	parsed = parseFloat(input);
+	if (Number.isFinite(parsed)) {
+		return parsed;
+	}
+
+	return undefined;
 }
