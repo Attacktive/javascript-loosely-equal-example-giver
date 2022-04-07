@@ -102,16 +102,16 @@ function format(input) {
 }
 
 /**
- * @param {String} input
+ * @param {String} string
  * @return {undefined|number}
  */
-function tryParsingToNumber(input) {
-	let parsed = parseInt(input);
+function tryParsingToNumber(string) {
+	let parsed = parseInt(string);
 	if (Number.isInteger(parsed)) {
 		return parsed;
 	}
 
-	parsed = parseFloat(input);
+	parsed = parseFloat(string);
 	if (Number.isFinite(parsed)) {
 		return parsed;
 	}
@@ -119,14 +119,14 @@ function tryParsingToNumber(input) {
 	return undefined;
 }
 
-function handleArray(input) {
-	if (isNestedEmptyArray(input) || isNumberInNestedArray(0, input)) {
+function handleArray(array) {
+	if (isNestedEmptyArray(array) || isNumberInNestedArray(0, array)) {
 		return [false, 0, ""];
 	}
-	if (isNumberInNestedArray(0, input)) {
+	if (isNumberInNestedArray(0, array)) {
 		return [false, 0, "0"];
 	}
-	if (isNumberInNestedArray(1, input)) {
+	if (isNumberInNestedArray(1, array)) {
 		return [true, 1, "1"];
 	}
 
@@ -171,8 +171,8 @@ function isNumberInNestedArray(target, array) {
 	}
 }
 
-function handleObject(input) {
-	const toPrimitive = input[Symbol.toPrimitive];
+function handleObject(object) {
+	const toPrimitive = object[Symbol.toPrimitive];
 	if (typeof toPrimitive === "function") {
 		const primitive = toPrimitive();
 		return giveExamples(primitive);
