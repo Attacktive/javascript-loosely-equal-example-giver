@@ -1,0 +1,11 @@
+#output {
+	background-color: #eeeeee;
+	min-width: 300px;
+	min-height: 80px;
+}
+
+#output.error {
+	color: red;
+	min-width: 1000px;
+	min-height: 200px;
+}
