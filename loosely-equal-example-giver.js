@@ -67,8 +67,10 @@ function giveExamples(x) {
 			} else {
 				return handleObject(x);
 			}
+		case "symbol":
+			return handleSymbol(x);
 		default:
-			// TODO: "symbol", "function"
+			// TODO: "function"
 			const message = `Not implemented for type ${type}.`;
 
 			console.error(message, x);
@@ -77,10 +79,11 @@ function giveExamples(x) {
 }
 
 /**
- * @param input
+ * @param {*} input
+ * @param {Number} [n]
  * @return {String}
  */
-function format(input) {
+function format(input, n) {
 	const type = typeof input;
 	switch (type) {
 		case "undefined":
@@ -88,6 +91,7 @@ function format(input) {
 		case "boolean":
 		case "number":
 		case "bigint":
+		case "symbol":
 			return String(input);
 		case "string":
 			return `"${input}"`;
@@ -96,9 +100,35 @@ function format(input) {
 				return "null";
 			}
 
-			// TODO: deal with undefined, Function, Symbol, Date, Infinity, NaN and nested Object
+			if (input instanceof Symbol) {
+				return formatSymbol(input, n);
+			}
+
+			// TODO: deal with Function, Date, Infinity, NaN and nested Object
 			return JSON.stringify(input);
 	}
+}
+
+/**
+ * @param {Symbol} symbol
+ * @param {Number} n
+ */
+function formatSymbol(symbol, n) {
+	let representation = "";
+
+	for (let i = 0; i < n; i++) {
+		representation += "Object(";
+	}
+
+	representation += input.toString();
+
+	for (let i = 0; i < n; i++) {
+		representation += ")";
+	}
+
+	representation += ";";
+
+	return representation;
 }
 
 /**
@@ -179,4 +209,20 @@ function handleObject(object) {
 	} else {
 		return [];
 	}
+}
+
+function handleSymbol(symbol) {
+	const first = Object(symbol);
+	const second = Object(first);
+	const third = Object(second);
+	const forth = Object(third);
+	const fifth = Object(forth);
+	const sixth = Object(fifth);
+	const seventh = Object(sixth);
+	const eighth = Object(seventh);
+	const ninth = Object(eighth);
+	const tenth = Object(ninth);
+	const eleventh = Object(tenth);
+
+	return [first, second, third, forth, fifth, sixth, seventh, eighth, ninth, tenth, eleventh];
 }

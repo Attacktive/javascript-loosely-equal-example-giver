@@ -45,7 +45,7 @@ function run() {
 			if (examples.length > 10) {
 				result = examples
 					.slice(0, 10)
-					.map(example => `x == ${format(example)}`)
+					.map((example, index) => `x == ${format(example, index)}`)
 					.join("\n")
 					.concat("\n…");
 			} else {
