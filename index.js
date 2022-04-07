@@ -1,9 +1,20 @@
+function onInput() {
+	const input = document.querySelector("#input");
+	const button = document.querySelector("#button");
+
+	if (input.value.length > 0) {
+		button.removeAttribute("disabled");
+	} else {
+		button.setAttribute("disabled", "");
+	}
+}
+
 function run() {
 	const input = document.querySelector("#input");
 	const xEvaluatedTo = document.querySelector("#x-evaluated-to");
 	const output = document.querySelector("#output");
 
-	const toEval = `x = ${input.value};`;
+	const toEval = `x = ${input.value}`;
 	console.debug("toEval", toEval);
 
 	let x;
@@ -12,20 +23,21 @@ function run() {
 	try {
 		eval(toEval);
 
-		xEvaluatedTo.textContent = `let x = ${x}`;
+		xEvaluatedTo.textContent = `let x = ${x};`;
 
 		const examples = giveExamples(x);
-		result = examples.map(example => `x == ${format(example)}`).join("\n");
 
-		output.classList.remove("error");
+		if (examples.length > 0) {
+			result = examples.map(example => `x == ${format(example)}`).join("\n");
+		} else {
+			result = `Nothing is loosely equal to ${x}.`;
+		}
 	} catch (error) {
 		console.error(error);
 
 		xEvaluatedTo.textContent = "let x;";
 		result = error.stack;
-
-		output.classList.add("error");
 	}
 
-	output.value = result;
+	output.textContent = result;
 }
