@@ -2,98 +2,128 @@
  * {@link https://262.ecma-international.org/5.1/#sec-11.9.3}
  * {@link https://dorey.github.io/JavaScript-Equality-Table/}
  * @param {*} x
- * @return {Array}
+ * @return {Object}
  */
 function giveExamples(x) {
 	if (Number.isNaN(x)) {
-		return [];
+		return {
+			isInfinite: false,
+			examples: []
+		};
 	}
 
 	if (x === null) {
-		return [undefined, null];
+		return {
+			isInfinite: false,
+			examples: [undefined, null]
+		};
 	}
 
 	if (x === true || x === 1 || x === "1") {
-		return [
-			true,
-			1,
-			"1",
-			[1],
-			["1"],
-			[[1]],
-			[["1"]],
-			[[[1]]],
-			[[["1"]]],
-			[[[[1]]]],
-			[[[["1"]]]]
-		];
+		return {
+			isInfinite: true,
+			examples: [
+				true,
+				1,
+				"1",
+				[1],
+				["1"],
+				[[1]],
+				[["1"]],
+				[[[1]]],
+				[[["1"]]],
+				[[[[1]]]],
+				[[[["1"]]]]
+			]
+		};
 	}
 
 	if (x === false || x === 0) {
-		return [
-			false,
-			0,
-			"0",
-			"",
-			[],
-			[0],
-			["0"],
-			[[]],
-			[[0]],
-			[["0"]],
-			[[[]]],
-			[[[0]]],
-			[[["0"]]]
-		];
+		return {
+			isInfinite: true,
+			examples: [
+				false,
+				0,
+				"0",
+				"",
+				[],
+				[0],
+				["0"],
+				[[]],
+				[[0]],
+				[["0"]],
+				[[[]]],
+				[[[0]]],
+				[[["0"]]]
+			]
+		};
 	}
 
 	if (x === "0") {
-		return [
-			false,
-			0,
-			"0",
-			[0],
-			["0"],
-			[[0]],
-			[["0"]],
-			[[[0]]],
-			[[["0"]]],
-			[[[[0]]]],
-			[[[["0"]]]]
-		];
+		return {
+			isInfinite: true,
+			examples: [
+				false,
+				0,
+				"0",
+				[0],
+				["0"],
+				[[0]],
+				[["0"]],
+				[[[0]]],
+				[[["0"]]],
+				[[[[0]]]],
+				[[[["0"]]]]
+			]
+		};
 	}
 
 	if (x === "") {
-		return [
-			false,
-			0,
-			"",
-			[],
-			[[]],
-			[[[]]],
-			[[[[]]]],
-			[[[[[]]]]],
-			[[[[[[]]]]]],
-			[[[[[[[]]]]]]],
-			[[[[[[[[]]]]]]]]
-		];
+		return {
+			isInfinite: true,
+			examples: [
+				false,
+				0,
+				"",
+				[],
+				[[]],
+				[[[]]],
+				[[[[]]]],
+				[[[[[]]]]],
+				[[[[[[]]]]]],
+				[[[[[[[]]]]]]],
+				[[[[[[[[]]]]]]]]
+			]
+		};
 	}
 
 	const type = typeof x;
 	switch (type) {
 		case "undefined":
-			return [undefined, null];
+			return {
+				isInfinite: false,
+				examples: [undefined, null]
+			};
 		case "number":
 		case "bigint":
-			return [x, String(x)];
+			return {
+				isInfinite: false,
+				examples: [x, String(x)]
+			};
 		case "boolean":
 			throw Error(`${x} is another Boolean value other than true or false!?`);
 		case "string":
 			let parsed = tryParsingToNumber(x);
 			if (parsed) {
-				return [x, parsed];
+				return {
+					isInfinite: false,
+					examples: [x, parsed]
+				};
 			} else {
-				return [x];
+				return {
+					isInfinite: false,
+					examples: [x]
+				};
 			}
 		case "object":
 			if (Array.isArray(x)) {
@@ -185,20 +215,32 @@ function tryParsingToNumber(string) {
 
 /**
  * @param {Array} array
- * @return {(boolean|number|string)[]|*[]}
+ * @return {Object}
  */
 function handleArray(array) {
 	if (isNestedEmptyArray(array) || isNumberInNestedArray(0, array)) {
-		return [false, 0, ""];
+		return {
+			isInfinite: false,
+			examples: [false, 0, ""]
+		};
 	}
 	if (isNumberInNestedArray(0, array)) {
-		return [false, 0, "0"];
+		return {
+			isInfinite: false,
+			examples: [false, 0, "0"]
+		};
 	}
 	if (isNumberInNestedArray(1, array)) {
-		return [true, 1, "1"];
+		return {
+			isInfinite: false,
+			examples: [true, 1, "1"]
+		};
 	}
 
-	return [];
+	return {
+		isInfinite: false,
+		examples: []
+	};
 }
 
 /**
@@ -241,7 +283,7 @@ function isNumberInNestedArray(target, array) {
 
 /**
  * @param {Object} object
- * @return {Array|*[]}
+ * @return {Object}
  */
 function handleObject(object) {
 	const toPrimitive = object[Symbol.toPrimitive];
@@ -249,13 +291,16 @@ function handleObject(object) {
 		const primitive = toPrimitive();
 		return giveExamples(primitive);
 	} else {
-		return [];
+		return {
+			isInfinite: false,
+			examples: []
+		};
 	}
 }
 
 /**
  * @param {Symbol} symbol
- * @return {Object[]}
+ * @return {Object}
  */
 function handleSymbol(symbol) {
 	const first = Object(symbol);
@@ -270,5 +315,8 @@ function handleSymbol(symbol) {
 	const tenth = Object(ninth);
 	const eleventh = Object(tenth);
 
-	return [first, second, third, forth, fifth, sixth, seventh, eighth, ninth, tenth, eleventh];
+	return {
+		isInfinite: true,
+		examples: [first, second, third, forth, fifth, sixth, seventh, eighth, ninth, tenth, eleventh]
+	};
 }

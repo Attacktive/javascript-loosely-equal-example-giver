@@ -42,12 +42,11 @@ function run() {
 
 		xEvaluatedTo.textContent = `let x = ${format(x)};`;
 
-		const examples = giveExamples(x);
+		const { isInfinite, examples } = giveExamples(x);
 
 		if (examples.length > 0) {
-			if (examples.length > 10) {
+			if (isInfinite) {
 				result = examples
-					.slice(0, 10)
 					.map((example, index) => `x == ${format(example, index)}`)
 					.join("\n")
 					.concat("\n…");
