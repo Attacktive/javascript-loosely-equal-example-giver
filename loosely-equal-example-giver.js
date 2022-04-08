@@ -244,44 +244,6 @@ function handleArray(array) {
 }
 
 /**
- * @param {Array} array
- * @return {boolean}
- */
-function isNestedEmptyArray(array) {
-	if (!Array.isArray(array)) {
-		return false;
-	}
-	if (array.length === 0) {
-		return true;
-	}
-	if (array.length > 1) {
-		return false;
-	}
-
-	const theOnlyElement = array[0];
-	return isNestedEmptyArray(theOnlyElement);
-}
-
-/**
- * @param {Number} target
- * @param {Array} array
- * @return {boolean}
- */
-function isNumberInNestedArray(target, array) {
-	if (array.length !== 1) {
-		return false;
-	}
-
-	const theOnlyElement = array[0];
-	if (Array.isArray(theOnlyElement)) {
-		return isNumberInNestedArray(target, theOnlyElement);
-	} else {
-		let parsed = parseFloat(theOnlyElement);
-		return (parsed === target);
-	}
-}
-
-/**
  * @param {Object} object
  * @return {Object}
  */
@@ -319,4 +281,42 @@ function handleSymbol(symbol) {
 		isInfinite: true,
 		examples: [first, second, third, forth, fifth, sixth, seventh, eighth, ninth, tenth, eleventh]
 	};
+}
+
+/**
+ * @param {Array} array
+ * @return {boolean}
+ */
+function isNestedEmptyArray(array) {
+	if (!Array.isArray(array)) {
+		return false;
+	}
+	if (array.length === 0) {
+		return true;
+	}
+	if (array.length > 1) {
+		return false;
+	}
+
+	const theOnlyElement = array[0];
+	return isNestedEmptyArray(theOnlyElement);
+}
+
+/**
+ * @param {Number} target
+ * @param {Array} array
+ * @return {boolean}
+ */
+function isNumberInNestedArray(target, array) {
+	if (array.length !== 1) {
+		return false;
+	}
+
+	const theOnlyElement = array[0];
+	if (Array.isArray(theOnlyElement)) {
+		return isNumberInNestedArray(target, theOnlyElement);
+	} else {
+		let parsed = parseFloat(theOnlyElement);
+		return (parsed === target);
+	}
 }
