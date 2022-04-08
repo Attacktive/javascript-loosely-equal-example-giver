@@ -19,25 +19,6 @@ function giveExamples(x) {
 		};
 	}
 
-	if (x === true || x === 1 || x === "1") {
-		return {
-			isInfinite: true,
-			examples: [
-				true,
-				1,
-				"1",
-				[1],
-				["1"],
-				[[1]],
-				[["1"]],
-				[[[1]]],
-				[[["1"]]],
-				[[[[1]]]],
-				[[[["1"]]]]
-			]
-		};
-	}
-
 	if (x === false || x === 0) {
 		return {
 			isInfinite: true,
@@ -74,6 +55,25 @@ function giveExamples(x) {
 				[[["0"]]],
 				[[[[0]]]],
 				[[[["0"]]]]
+			]
+		};
+	}
+
+	if (x === true || x === 1 || x === "1") {
+		return {
+			isInfinite: true,
+			examples: [
+				true,
+				1,
+				"1",
+				[1],
+				["1"],
+				[[1]],
+				[["1"]],
+				[[[1]]],
+				[[["1"]]],
+				[[[[1]]]],
+				[[[["1"]]]]
 			]
 		};
 	}
@@ -140,24 +140,6 @@ function giveExamples(x) {
 			console.error(message, x);
 			throw Error(message);
 	}
-}
-
-/**
- * @param {String} string
- * @return {undefined|number}
- */
-function tryParsingToNumber(string) {
-	let parsed = parseInt(string);
-	if (Number.isInteger(parsed)) {
-		return parsed;
-	}
-
-	parsed = parseFloat(string);
-	if (Number.isFinite(parsed)) {
-		return parsed;
-	}
-
-	return undefined;
 }
 
 /**
@@ -229,6 +211,24 @@ function handleSymbol(symbol) {
 		isInfinite: true,
 		examples: generateObjectWrappedArrayUpToNTimes(symbol, 10)
 	};
+}
+
+/**
+ * @param {String} string
+ * @return {undefined|number}
+ */
+function tryParsingToNumber(string) {
+	let parsed = parseInt(string);
+	if (Number.isInteger(parsed)) {
+		return parsed;
+	}
+
+	parsed = parseFloat(string);
+	if (Number.isFinite(parsed)) {
+		return parsed;
+	}
+
+	return undefined;
 }
 
 /**
