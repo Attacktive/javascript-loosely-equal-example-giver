@@ -24,6 +24,10 @@ function format(input, n) {
 				return formatNonPrimitive(input, n);
 			}
 
+			if (input instanceof String) {
+				return formatNonPrimitive(input, n, () => `new ${input.constructor.name}("${input})"`);
+			}
+
 			if (input instanceof Date) {
 				return formatNonPrimitive(input, n, () => `new ${input.constructor.name}()`);
 			}

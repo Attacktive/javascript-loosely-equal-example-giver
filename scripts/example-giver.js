@@ -26,13 +26,13 @@ function giveExamples(x) {
 			let parsed = tryParsingToNumber(x);
 			if (parsed) {
 				return {
-					isInfinite: false,
-					examples: [x, parsed]
+					isInfinite: true,
+					examples: [x, parsed].concat(generateWrappedArrayUpToNTimes(x, 10, String))
 				};
 			} else {
 				return {
-					isInfinite: false,
-					examples: [x]
+					isInfinite: true,
+					examples: [x].concat(generateWrappedArrayUpToNTimes(x, 10, String))
 				};
 			}
 		case "object":
@@ -52,7 +52,11 @@ function giveExamples(x) {
 	}
 }
 
-function handleSpecialCases() {
+/**
+ * @param x
+ * @return {Object}
+ */
+function handleSpecialCases(x) {
 	if (Number.isNaN(x)) {
 		return {
 			isInfinite: false,
@@ -89,6 +93,7 @@ function handleSpecialCases() {
 	}
 
 	if (x === "0") {
+		// TODO: add objects using String constructor
 		return {
 			isInfinite: true,
 			examples: [
@@ -107,7 +112,27 @@ function handleSpecialCases() {
 		};
 	}
 
-	if (x === true || x === 1 || x === "1") {
+	if (x === true || x === 1) {
+		return {
+			isInfinite: true,
+			examples: [
+				true,
+				1,
+				"1",
+				[1],
+				["1"],
+				[[1]],
+				[["1"]],
+				[[[1]]],
+				[[["1"]]],
+				[[[[1]]]],
+				[[[["1"]]]]
+			]
+		};
+	}
+
+	if (x === "1") {
+		// TODO: add objects using String constructor
 		return {
 			isInfinite: true,
 			examples: [
@@ -127,6 +152,7 @@ function handleSpecialCases() {
 	}
 
 	if (x === "") {
+		// TODO: add objects using String constructor
 		return {
 			isInfinite: true,
 			examples: [
@@ -276,13 +302,14 @@ function isNumberInNestedArray(target, array) {
 /**
  * @param any
  * @param {Number} n
+ * @param constructor
  * @return {Array}
  */
-function generateObjectWrappedArrayUpToNTimes(any, n) {
+function generateWrappedArrayUpToNTimes(any, n, constructor) {
 	const array = [];
 
 	for (let i = 0; i <= n; i++) {
-		array.push(wrapWithObjectNTimes(any, i));
+		array.push(wrapWithConstructorNTimes(any, i, constructor));
 	}
 
 	return array;
@@ -291,18 +318,37 @@ function generateObjectWrappedArrayUpToNTimes(any, n) {
 /**
  * @param any
  * @param {Number} n
+ * @param {Function} constructor
  * @return {*|Object}
  */
-function wrapWithObjectNTimes(any, n) {
+function wrapWithConstructorNTimes(any, n, constructor) {
 	if (n === 0) {
 		return any;
 	}
 
-	const wrapped = Object(any);
+	const wrapped = constructor(any);
 
 	if (n === 1) {
 		return wrapped;
 	}
 
 	return wrapWithObjectNTimes(wrapped, n - 1);
+}
+
+/**
+ * @param any
+ * @param {Number} n
+ * @return {Array}
+ */
+function generateObjectWrappedArrayUpToNTimes(any, n) {
+	return generateWrappedArrayUpToNTimes(any, n, Object);
+}
+
+/**
+ * @param any
+ * @param {Number} n
+ * @return {*|Object}
+ */
+function wrapWithObjectNTimes(any, n) {
+	return wrapWithConstructorNTimes(any, n, Object);
 }
