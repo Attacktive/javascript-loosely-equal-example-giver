@@ -184,7 +184,7 @@ function formatSymbol(symbol, n) {
 		representation += "Object(";
 	}
 
-	representation += input.toString();
+	representation += symbol.toString();
 
 	for (let i = 0; i < n; i++) {
 		representation += ")";
