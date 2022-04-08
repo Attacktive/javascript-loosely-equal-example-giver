@@ -5,6 +5,54 @@
  * @return {Object}
  */
 function giveExamples(x) {
+	handleSpecialCases(x);
+
+	const type = typeof x;
+	switch (type) {
+		case "undefined":
+			return {
+				isInfinite: false,
+				examples: [undefined, null]
+			};
+		case "number":
+		case "bigint":
+			return {
+				isInfinite: false,
+				examples: [x, String(x)]
+			};
+		case "boolean":
+			throw Error(`${x} is another Boolean value other than true or false!?`);
+		case "string":
+			let parsed = tryParsingToNumber(x);
+			if (parsed) {
+				return {
+					isInfinite: false,
+					examples: [x, parsed]
+				};
+			} else {
+				return {
+					isInfinite: false,
+					examples: [x]
+				};
+			}
+		case "object":
+			if (Array.isArray(x)) {
+				return handleArray(x);
+			} else {
+				return handleObject(x);
+			}
+		case "symbol":
+			return handleSymbol(x);
+		default:
+			// TODO: "function"
+			const message = `Not implemented for type ${type}.`;
+
+			console.error(message, x);
+			throw Error(message);
+	}
+}
+
+function handleSpecialCases() {
 	if (Number.isNaN(x)) {
 		return {
 			isInfinite: false,
@@ -95,50 +143,6 @@ function giveExamples(x) {
 				[[[[[[[[]]]]]]]]
 			]
 		};
-	}
-
-	const type = typeof x;
-	switch (type) {
-		case "undefined":
-			return {
-				isInfinite: false,
-				examples: [undefined, null]
-			};
-		case "number":
-		case "bigint":
-			return {
-				isInfinite: false,
-				examples: [x, String(x)]
-			};
-		case "boolean":
-			throw Error(`${x} is another Boolean value other than true or false!?`);
-		case "string":
-			let parsed = tryParsingToNumber(x);
-			if (parsed) {
-				return {
-					isInfinite: false,
-					examples: [x, parsed]
-				};
-			} else {
-				return {
-					isInfinite: false,
-					examples: [x]
-				};
-			}
-		case "object":
-			if (Array.isArray(x)) {
-				return handleArray(x);
-			} else {
-				return handleObject(x);
-			}
-		case "symbol":
-			return handleSymbol(x);
-		default:
-			// TODO: "function"
-			const message = `Not implemented for type ${type}.`;
-
-			console.error(message, x);
-			throw Error(message);
 	}
 }
 
