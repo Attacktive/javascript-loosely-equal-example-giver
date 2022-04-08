@@ -1,7 +1,7 @@
 /**
  * {@link https://262.ecma-international.org/5.1/#sec-11.9.3}
  * {@link https://dorey.github.io/JavaScript-Equality-Table/}
- * @param {*} x
+ * @param x
  * @return {Object}
  */
 function giveExamples(x) {
@@ -143,7 +143,7 @@ function giveExamples(x) {
 }
 
 /**
- * @param {*} input
+ * @param input
  * @param {Number} [n]
  * @return {String}
  */
@@ -165,34 +165,45 @@ function format(input, n) {
 			}
 
 			if (input instanceof Symbol) {
-				return formatSymbol(input, n);
+				return formatNonPrimitive(input, n);
 			}
 
-			// TODO: deal with Function, Date, Infinity, NaN and nested Object
+			if (input instanceof Date) {
+				return formatNonPrimitive(input, n, () => `new ${input.constructor.name}()`);
+			}
+
+			// TODO: deal with Function, Date and nested Object
 			return JSON.stringify(input);
 	}
 }
 
 /**
- * @param {Symbol} symbol
+ * @param any
  * @param {Number} n
+ * @param {String|Function} [representation]
  */
-function formatSymbol(symbol, n) {
-	let representation = "";
+function formatNonPrimitive(any, n, representation) {
+	let formatted = "";
 
 	for (let i = 0; i < n; i++) {
-		representation += "Object(";
+		formatted += "Object(";
 	}
 
-	representation += symbol.toString();
+	if (typeof representation === "string") {
+		formatted += representation;
+	} else if (typeof representation === "function") {
+		formatted += representation();
+	} else {
+		formatted += any.toString();
+	}
 
 	for (let i = 0; i < n; i++) {
-		representation += ")";
+		formatted += ")";
 	}
 
-	representation += ";";
+	formatted += ";";
 
-	return representation;
+	return formatted;
 }
 
 /**
@@ -250,14 +261,27 @@ function handleArray(array) {
 function handleObject(object) {
 	const toPrimitive = object[Symbol.toPrimitive];
 	if (typeof toPrimitive === "function") {
-		const primitive = toPrimitive();
-		return giveExamples(primitive);
-	} else {
-		return {
-			isInfinite: false,
-			examples: []
-		};
+		try {
+			const primitive = toPrimitive();
+			return giveExamples(primitive);
+		} catch (error) {
+			console.trace("Failed to invoke Symbol.toPrimitive.", error);
+
+			if (object instanceof Date) {
+				return {
+					isInfinite: true,
+					examples: generateObjectWrappedArrayUpToNTimes(object, 10)
+				};
+			}
+
+			// TODO: what else?
+		}
 	}
+
+	return {
+		isInfinite: false,
+		examples: []
+	};
 }
 
 /**
@@ -265,21 +289,9 @@ function handleObject(object) {
  * @return {Object}
  */
 function handleSymbol(symbol) {
-	const first = Object(symbol);
-	const second = Object(first);
-	const third = Object(second);
-	const forth = Object(third);
-	const fifth = Object(forth);
-	const sixth = Object(fifth);
-	const seventh = Object(sixth);
-	const eighth = Object(seventh);
-	const ninth = Object(eighth);
-	const tenth = Object(ninth);
-	const eleventh = Object(tenth);
-
 	return {
 		isInfinite: true,
-		examples: [first, second, third, forth, fifth, sixth, seventh, eighth, ninth, tenth, eleventh]
+		examples: generateObjectWrappedArrayUpToNTimes(symbol, 10)
 	};
 }
 
@@ -319,4 +331,38 @@ function isNumberInNestedArray(target, array) {
 		let parsed = parseFloat(theOnlyElement);
 		return (parsed === target);
 	}
+}
+
+/**
+ * @param any
+ * @param {Number} n
+ * @return {Array}
+ */
+function generateObjectWrappedArrayUpToNTimes(any, n) {
+	const array = [];
+
+	for (let i = 0; i <= n; i++) {
+		array.push(wrapWithObjectNTimes(any, i));
+	}
+
+	return array;
+}
+
+/**
+ * @param any
+ * @param {Number} n
+ * @return {*|Object}
+ */
+function wrapWithObjectNTimes(any, n) {
+	if (n === 0) {
+		return any;
+	}
+
+	const wrapped = Object(any);
+
+	if (n === 1) {
+		return wrapped;
+	}
+
+	return wrapWithObjectNTimes(wrapped, n - 1);
 }
