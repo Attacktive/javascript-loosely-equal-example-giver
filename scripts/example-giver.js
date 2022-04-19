@@ -5,7 +5,10 @@
  * @return {Object}
  */
 function giveExamples(x) {
-	handleSpecialCases(x);
+	const examples = handleSpecialCases(x);
+	if (examples) {
+		return examples;
+	}
 
 	const type = typeof x;
 	switch (type) {
