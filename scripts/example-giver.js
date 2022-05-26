@@ -251,7 +251,7 @@ function handleSymbol(symbol) {
  * @return {undefined|number}
  */
 function tryParsingToNumber(string) {
-	let parsed = parseInt(string);
+	let parsed = parseInt(string, 10);
 	if (Number.isInteger(parsed)) {
 		return parsed;
 	}
