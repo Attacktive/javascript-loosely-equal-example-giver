@@ -25,8 +25,8 @@ function giveExamples(x) {
 			};
 		case "boolean":
 			throw Error(`${x} is another Boolean value other than true or false!?`);
-		case "string":
-			let parsed = tryParsingToNumber(x);
+		case "string": {
+			const parsed = tryParsingToNumber(x);
 			if (parsed) {
 				return {
 					isInfinite: true,
@@ -38,6 +38,7 @@ function giveExamples(x) {
 					examples: [x].concat(generateWrappedArrayUpToNTimes(x, 10, String))
 				};
 			}
+		}
 		case "object":
 			if (Array.isArray(x)) {
 				return handleArray(x);
@@ -46,12 +47,13 @@ function giveExamples(x) {
 			}
 		case "symbol":
 			return handleSymbol(x);
-		default:
+		default: {
 			// TODO: "function"
 			const message = `Not implemented for type ${type}.`;
 
 			console.error(message, x);
 			throw Error(message);
+		}
 	}
 }
 
