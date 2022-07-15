@@ -4,5 +4,3 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/attacktive/javascript-loosely-equal-example-giver/badge)](https://www.codefactor.io/repository/github/attacktive/javascript-loosely-equal-example-giver)
 
 Suspended
-
-[GitHub Page](https://attacktive.github.io/javascript-loosely-equal-example-giver)
