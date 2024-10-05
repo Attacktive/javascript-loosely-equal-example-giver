@@ -1,8 +1,15 @@
 /**
+ * @typedef Example
+ * @type {object}
+ * @property {boolean} isInfinite
+ * @property {Array} examples
+ */
+
+/**
  * {@link https://262.ecma-international.org/5.1/#sec-11.9.3}
  * {@link https://dorey.github.io/JavaScript-Equality-Table/}
  * @param x
- * @return {Object}
+ * @return {Example}
  */
 function giveExamples(x) {
 	const examples = handleSpecialCases(x);
@@ -59,7 +66,7 @@ function giveExamples(x) {
 
 /**
  * @param x
- * @return {Object}
+ * @return {Example}
  */
 function handleSpecialCases(x) {
 	if (Number.isNaN(x)) {
@@ -179,7 +186,7 @@ function handleSpecialCases(x) {
 
 /**
  * @param {Array} array
- * @return {Object}
+ * @return {Example}
  */
 function handleArray(array) {
 	if (isNestedEmptyArray(array) || isNumberInNestedArray(0, array)) {
@@ -208,8 +215,8 @@ function handleArray(array) {
 }
 
 /**
- * @param {Object} object
- * @return {Object}
+ * @param {object} object
+ * @return {Example}
  */
 function handleObject(object) {
 	const toPrimitive = object[Symbol.toPrimitive];
@@ -239,7 +246,7 @@ function handleObject(object) {
 
 /**
  * @param {Symbol} symbol
- * @return {Object}
+ * @return {Example}
  */
 function handleSymbol(symbol) {
 	return {
@@ -249,7 +256,7 @@ function handleSymbol(symbol) {
 }
 
 /**
- * @param {String} string
+ * @param {string} string
  * @return {undefined|number}
  */
 function tryParsingToNumber(string) {
@@ -286,7 +293,7 @@ function isNestedEmptyArray(array) {
 }
 
 /**
- * @param {Number} target
+ * @param {number} target
  * @param {Array} array
  * @return {boolean}
  */
@@ -306,7 +313,7 @@ function isNumberInNestedArray(target, array) {
 
 /**
  * @param any
- * @param {Number} n
+ * @param {number} n
  * @param constructor
  * @return {Array}
  */
@@ -322,7 +329,7 @@ function generateWrappedArrayUpToNTimes(any, n, constructor) {
 
 /**
  * @param any
- * @param {Number} n
+ * @param {number} n
  * @param {Function} constructor
  * @return {*|Object}
  */
@@ -342,7 +349,7 @@ function wrapWithConstructorNTimes(any, n, constructor) {
 
 /**
  * @param any
- * @param {Number} n
+ * @param {number} n
  * @return {Array}
  */
 function generateObjectWrappedArrayUpToNTimes(any, n) {
@@ -351,7 +358,7 @@ function generateObjectWrappedArrayUpToNTimes(any, n) {
 
 /**
  * @param any
- * @param {Number} n
+ * @param {number} n
  * @return {*|Object}
  */
 function wrapWithObjectNTimes(any, n) {
