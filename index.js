@@ -40,7 +40,7 @@ function run() {
 	try {
 		eval(toEval);
 
-		xEvaluatedTo.textContent = `let x = ${format(x)};`;
+		xEvaluatedTo.textContent = `const x = ${format(x)};`;
 
 		const { isInfinite, examples } = giveExamples(x);
 
@@ -61,7 +61,7 @@ function run() {
 	} catch (error) {
 		console.error(error);
 
-		xEvaluatedTo.textContent = "let x;";
+		xEvaluatedTo.textContent = "undefined";
 		result = error.stack;
 	}
 

@@ -8,19 +8,20 @@ h1, h2, h3, h4, h5, h6 {
 	text-align: center;
 }
 
+code {
+	font-size: 1.5rem;
+}
+
+footer {
+	background-color: #eeeeee;
+}
+
 #input {
 	font-family: var(--bs-font-monospace);
+	font-size: 1.25rem;
 }
 
 #output {
 	background-color: #eeeeee;
 	min-height: 30px;
-}
-
-label[for=input] {
-	width: 4%;
-}
-
-footer {
-	background-color: #eeeeee;
 }
