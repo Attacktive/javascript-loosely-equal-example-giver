@@ -34,7 +34,7 @@ function run() {
 	const toEval = `x = ${input.value}`;
 	console.debug("toEval", toEval);
 
-	let x;
+	let x = undefined;
 	let result;
 
 	try {
