@@ -1,6 +1,6 @@
 /**
  * @typedef Example
- * @type {object}
+ * @type {Object}
  * @property {boolean} isInfinite
  * @property {Array} examples
  */
@@ -215,7 +215,7 @@ function handleArray(array) {
 }
 
 /**
- * @param {object} object
+ * @param {Object} object
  * @return {Example}
  */
 function handleObject(object) {
@@ -245,7 +245,7 @@ function handleObject(object) {
 }
 
 /**
- * @param {Symbol} symbol
+ * @param {symbol} symbol
  * @return {Example}
  */
 function handleSymbol(symbol) {
